@@ -1,28 +1,31 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import Page from '../components/Page'
-import { wrapper } from '../store'
-import { serverRenderClock, startClock } from '@store/slices/tickSlice'
-import { increment } from '@store/slices/countSlice'
+import { wrapper } from '@store'
+import { END } from 'redux-saga'
+import { tickClock } from '@store/slices/tickSlice'
+import { loadUsers } from '@store/slices/userSlice'
+import { startClock } from '@saga/actions'
+import Page from '@components/Page'
 
 const Index = () => {
   const dispatch = useDispatch()
 
-
   useEffect(() => {
-    const timer = dispatch(startClock())
-
-    return () => {
-      clearInterval(timer)
-    }
-  }, [])
+    dispatch(startClock())
+  }, [dispatch])
 
   return <Page title="Index Page" linkTo="/other" />
 }
 
 export const getStaticProps = wrapper.getStaticProps(async ({ store }) => {
-  store.dispatch(serverRenderClock(true))
-  store.dispatch(increment())
+  store.dispatch(tickClock(false))
+
+  if (!store.getState().user.users.length) {
+    store.dispatch(loadUsers())
+    store.dispatch(END)
+  }
+
+  await store.sagaTask.toPromise()
 })
 
 export default Index

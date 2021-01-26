@@ -2,8 +2,9 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import Page from '../components/Page'
 import { wrapper } from '@/store'
-import { serverRenderClock, startClock } from '@/store/slices/tickSlice'
+import { startClock } from '@saga/actions'
 import { increment } from '@/store/slices/countSlice'
+import { tickClock } from '@/store/slices/tickSlice'
 
 const Other = () => {
   const dispatch = useDispatch()
@@ -21,7 +22,7 @@ const Other = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
   async ({ store }) => {
-    store.dispatch(serverRenderClock(true))
+    store.dispatch(tickClock(true))
     store.dispatch(increment())
   }
 )

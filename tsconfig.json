@@ -23,6 +23,7 @@
       "@components/*": ["components/*"],
       "@pages/*": ["pages/*"],
       "@store/*": ["store/*"],
+      "@saga/*": ["saga/*"],
       "@services/*": ["services/*"],
       "@styles/*": ["styles/*"],
       "@public/*": ["public/*"]

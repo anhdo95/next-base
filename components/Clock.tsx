@@ -1,4 +1,10 @@
-export default function Clock({ lastUpdate, light }) {
+import { useSelector } from 'react-redux'
+import { selectLastUpdate, selectLight } from '@store/slices/tickSlice'
+
+export default function Clock() {
+  const lastUpdate = useSelector(selectLastUpdate)
+  const light = useSelector(selectLight)
+
   return (
     <div className={light ? 'light' : ''}>
       {format(new Date(lastUpdate))}

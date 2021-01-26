@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { createStore, applyMiddleware, combineReducers } from 'redux'
-import { HYDRATE, createWrapper, MakeStore, Context } from 'next-redux-wrapper'
+import { combineReducers } from 'redux'
+import { HYDRATE, createWrapper } from 'next-redux-wrapper'
 import thunkMiddleware from 'redux-thunk'
 
 import countReducer from '@store/slices/countSlice'
@@ -25,7 +25,7 @@ const reducer = (state, action) => {
   }
 }
 
-const initStore = (context: Context) => {
+const initStore = () => {
   return configureStore({
     reducer,
     middleware: (getDefaultMiddleware) => {
@@ -34,7 +34,6 @@ const initStore = (context: Context) => {
     },
     devTools: true,
   })
-  // return createStore(reducer, bindMiddleware([thunkMiddleware]))
 }
 
 export const wrapper = createWrapper(initStore)

@@ -1,9 +1,16 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { addCount } from '../store/count/action'
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 
-const AddCount = ({ count, addCount }) => {
+import { increment, selectCount } from "@store/slices/countSlice";
+
+const AddCount = () => {
+  const count = useSelector(selectCount);
+  const dispatch = useDispatch();
+
+  function addCount() {
+    dispatch(increment());
+  }
+
   return (
     <div>
       <style jsx>{`
@@ -16,17 +23,7 @@ const AddCount = ({ count, addCount }) => {
       </h1>
       <button onClick={addCount}>Add To Count</button>
     </div>
-  )
-}
+  );
+};
 
-const mapStateToProps = (state) => ({
-  count: state.count.count,
-})
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addCount: bindActionCreators(addCount, dispatch),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddCount)
+export default AddCount;

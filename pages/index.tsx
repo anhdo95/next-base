@@ -1,15 +1,34 @@
-import Link from 'next/link'
-import Layout from '../components/Layout'
+import { useEffect } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators, Dispatch } from 'redux'
+import Page from '../components/Page'
+import { addCount } from '../store/count/action'
+import { wrapper } from '../store'
+import { serverRenderClock, startClock } from '../store/tick/action'
 
-const IndexPage = () => (
-  <Layout title="Home | Next.js + TypeScript Example">
-    <h1>Hello Next.js 👋</h1>
-    <p>
-      <Link href="/about">
-        <a>About</a>
-      </Link>
-    </p>
-  </Layout>
-)
+const Index = (props) => {
 
-export default IndexPage
+  useEffect(() => {
+    const timer = props.startClock()
+
+    return () => {
+      clearInterval(timer)
+    }
+  }, [props])
+
+  return <Page title="Index Page" linkTo="/other" />
+}
+
+export const getStaticProps = wrapper.getStaticProps(async ({ store }) => {
+  store.dispatch(serverRenderClock(true))
+  store.dispatch(addCount())
+})
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    addCount: bindActionCreators(addCount, dispatch),
+    startClock: bindActionCreators(startClock, dispatch),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Index)

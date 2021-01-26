@@ -8,6 +8,7 @@
     "type-check": "tsc"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "1.5.0",
     "next": "latest",
     "next-redux-wrapper": "6.0.2",
     "react": "^16.12.0",
